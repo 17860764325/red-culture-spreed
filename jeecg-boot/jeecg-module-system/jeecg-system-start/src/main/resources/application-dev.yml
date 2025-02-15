@@ -163,9 +163,9 @@ spring:
           slow-sql-millis: 5000
       datasource:
         master:
-          url: jdbc:mysql://127.0.0.1:3306/jeecg-boot?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://localhost:3306/redculture?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
           username: root
-          password: root
+          password: liuyinuo1314
           driver-class-name: com.mysql.cj.jdbc.Driver
           # 多数据源配置
           #multi-datasource1:
@@ -199,12 +199,12 @@ mybatis-plus:
 minidao:
   base-package: org.jeecg.modules.jmreport.*,org.jeecg.modules.drag.*
 jeecg:
-  # AI集成
+  # AI集成#
   ai-chat:
     enabled: true
-    model: deepseek-chat
-    apiKey: ??
-    apiHost: https://api.deepseek.com
+    model: deepseek-r1:8b
+    apiKey: ollama
+    apiHost: http://localhost:11434
     timeout: 60
   # 平台上线安全配置
   firewall:
@@ -258,7 +258,7 @@ jeecg:
   #大屏报表参数设置
   jmreport:
     #多租户模式，默认值为空(created:按照创建人隔离、tenant:按照租户隔离) (v1.6.2+ 新增)
-    saasMode: 
+    saasMode:
     # 平台上线安全配置(v1.6.2+ 新增)
     firewall:
       # 数据源安全 (开启后，不允许使用平台数据源、SQL解析加签并且不允许查询数据库)

@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 //update-begin---author:chenrui ---date:20240126  for：【QQYUN-7932】AI助手------------
 /**
  * OpenAI的SSE监听
- * @author chenrui
+ * @author
  * @date 2024/1/26 20:06
  */
 @Slf4j
