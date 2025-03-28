@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.demo.chapterList.mapper.ObjectDataMapper">
+
+	<delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE 
+		FROM  object_data 
+		WHERE
+			 chapter_code = #{mainId} 
+	</delete>
+	
+	<select id="selectByMainId" parameterType="java.lang.String" resultType="org.jeecg.modules.demo.chapterList.entity.ObjectData">
+		SELECT * 
+		FROM  object_data
+		WHERE
+			 chapter_code = #{mainId} 
+	</select>
+</mapper>

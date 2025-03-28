@@ -7,10 +7,10 @@
         <h1 style="color: red;">红色文化展示</h1>
         <h5 style="color: black;padding-left: 30px">红色文化党建宣传平台</h5>
       </a-row>
-      <img src="../../../../static/topOther.jpg" style="width: 92%">
+      <img src="../static/topOther.jpg" style="width: 92%">
     </a-row>
     <a-divider style="height: 2px; background-color: #b70b0b"/>
-    <img src="../../../../static/top.jpg" style="width: 100%;"/>
+    <img src="../static/top.jpg" style="width: 100%;"/>
     <!--面包屑-->
     <a-breadcrumb style="padding: 20px;border: black 1px solid;margin-top: 10px">
       <a-breadcrumb-item>首页</a-breadcrumb-item>
@@ -41,7 +41,7 @@
 <script lang="ts" setup>
 import {defineComponent, ref, computed, unref, reactive} from 'vue';
 import {BasicModal, useModalInner} from '/@/components/Modal';
-import {pageInfoList} from '../../redSpirit/RedSpirit.api'
+import {pageInfoList} from '../../../redSpirit/RedSpirit.api'
 
 const flagName = ref()
 const pageInfo = ref<Object>({})

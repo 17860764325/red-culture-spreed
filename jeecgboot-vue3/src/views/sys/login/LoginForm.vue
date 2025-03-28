@@ -7,7 +7,6 @@
     <FormItem name="password" class="enter-x">
       <InputPassword size="large" visibilityToggle v-model:value="formData.password" :placeholder="t('sys.login.password')" />
     </FormItem>
-
     <!--验证码-->
     <ARow class="enter-x">
       <ACol :span="12">
