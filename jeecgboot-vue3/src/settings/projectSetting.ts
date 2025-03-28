@@ -65,7 +65,7 @@ const setting: ProjectConfig = {
   // 头部配置
   headerSetting: {
     // 背景色
-    bgColor: HEADER_PRESET_BG_COLOR_LIST[4],
+    bgColor: HEADER_PRESET_BG_COLOR_LIST[6],
     // 固定头部
     fixed: true,
     // 是否显示顶部
@@ -87,7 +87,7 @@ const setting: ProjectConfig = {
   // 菜单配置
   menuSetting: {
     // 背景色
-    bgColor: SIDE_BAR_BG_COLOR_LIST[0],
+    bgColor: SIDE_BAR_BG_COLOR_LIST[9],
     // 是否固定住左侧菜单
     fixed: true,
     // 菜单折叠
@@ -104,9 +104,9 @@ const setting: ProjectConfig = {
     // 菜单宽度
     menuWidth: 210,
     // 菜单模式
-    mode: MenuModeEnum.INLINE,
+    mode: MenuModeEnum.HORIZONTAL,
     // 菜单类型
-    type: MenuTypeEnum.SIDEBAR,
+    type: MenuTypeEnum.TOP_MENU,
     // 菜单主题
     theme: ThemeEnum.DARK,
     // update-begin--author:liaozhiyang---date:20241203---for：【issues/7522】解决menuSetting ts警告
