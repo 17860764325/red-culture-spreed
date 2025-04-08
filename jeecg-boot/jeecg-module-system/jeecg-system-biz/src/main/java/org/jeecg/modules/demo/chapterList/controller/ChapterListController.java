@@ -8,13 +8,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.demo.objectList.entity.ObjectList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.Arrays;
-import java.util.HashMap;
+
+import java.util.*;
+
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.chapterList.entity.ObjectData;
 import org.jeecg.modules.demo.chapterList.entity.ChapterList;
@@ -33,8 +35,6 @@ import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
  /**
@@ -301,6 +301,26 @@ public class ChapterListController extends JeecgController<ChapterList, IChapter
     /*--------------------------------子表处理-课程资料-end----------------------------------------------*/
 
 
+	 /**
+	  * 根据课程编码查询所有的章节数据
+	  * @param chapterList
+	  * @return
+	  */
+	 @RequestMapping(value = "/selectDataByObjectCode", method = RequestMethod.POST)
+	 public Result<List<ChapterList>> selectDataByObjectCode(@RequestBody ChapterList chapterList) {
+		 return chapterListService.selectDataByObjectCode(chapterList);
+	 }
+
+	 /**
+	  * 根据课程编码更新课程
+	  * @param chapterList
+	  * @return
+	  */
+	 @RequestMapping(value = "/updateWatch", method = RequestMethod.POST)
+	 public Result<ChapterList> updateWatch(@RequestBody ChapterList chapterList) {
+		 chapterListService.updateWatch(chapterList);
+		 return Result.OK(chapterList);
+	 }
 
 
 }

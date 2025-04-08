@@ -64,7 +64,7 @@ export const formSchema: FormSchema[] = [
   {
     label: '课程图片',
     field: 'objectImg',
-    component: 'Input',
+    component: 'JImageUpload',
   },
 	// TODO 主键隐藏字段，目前写死为ID
 	{

@@ -20,6 +20,11 @@ export const columns: BasicColumn[] = [
     align:"center",
     dataIndex: 'patientId'
    },
+  {
+    title: '课程编码',
+    align:"center",
+    dataIndex: 'objectCode'
+  },
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
@@ -40,6 +45,11 @@ export const formSchema: FormSchema[] = [
   {
     label: '父章节id',
     field: 'patientId',
+    component: 'Input',
+  },
+  {
+    label: '课程编码',
+    field: 'objectCode',
     component: 'Input',
   },
 	// TODO 主键隐藏字段，目前写死为ID
@@ -106,7 +116,7 @@ export const objectDataFormSchema: FormSchema[] = [
   {
     label: '视频内容',
     field: 'vedio',
-    component: 'Input',
+    component: 'JUpload',
   },
 ];
 

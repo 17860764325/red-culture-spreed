@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+
+import com.baomidou.mybatisplus.annotation.*;
 import org.jeecg.common.constant.ProvinceCityArea;
 import org.jeecg.common.util.SpringContextUtils;
 import lombok.Data;
@@ -77,4 +75,10 @@ public class ObjectList implements Serializable {
 	@Excel(name = "课程图片", width = 15)
     @ApiModelProperty(value = "课程图片")
     private String objectImg;
+
+    /**
+     * 课件学习
+     */
+    @TableField(exist = false)
+    private String coursewareLearning;
 }

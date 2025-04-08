@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.demo.courseExam.mapper.CourseExamMapper">
+
+    <select id="randomQuery" resultType="org.jeecg.modules.demo.courseExam.entity.CourseExam">
+        SELECT * FROM `course_exam`
+        <where>
+            1 = 1
+            <if test="objectCode != null and objectCode != ''">
+                and object_code = #{objectCode}
+            </if>
+        </where>
+        ORDER BY RAND() LIMIT 50
+--         ORDER BY RAND() LIMIT 50
+    </select>
+
+
+</mapper>

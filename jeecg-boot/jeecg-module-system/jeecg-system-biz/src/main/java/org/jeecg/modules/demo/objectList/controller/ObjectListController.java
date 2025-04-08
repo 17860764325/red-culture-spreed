@@ -1,9 +1,6 @@
 package org.jeecg.modules.demo.objectList.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +11,8 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.query.QueryRuleEnum;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.demo.chapterList.entity.ChapterList;
+import org.jeecg.modules.demo.chapterList.mapper.ChapterListMapper;
 import org.jeecg.modules.demo.objectList.entity.ObjectList;
 import org.jeecg.modules.demo.objectList.service.IObjectListService;
 
@@ -52,6 +51,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class ObjectListController extends JeecgController<ObjectList, IObjectListService> {
 	@Autowired
 	private IObjectListService objectListService;
+	@Autowired
+	private ChapterListMapper chapterListMapper;
 	
 	/**
 	 * 分页列表查询
@@ -72,6 +73,18 @@ public class ObjectListController extends JeecgController<ObjectList, IObjectLis
         QueryWrapper<ObjectList> queryWrapper = QueryGenerator.initQueryWrapper(objectList, req.getParameterMap());
 		Page<ObjectList> page = new Page<ObjectList>(pageNo, pageSize);
 		IPage<ObjectList> pageList = objectListService.page(page, queryWrapper);
+		// 查询所有的parentId不等于0的章节
+		List<ChapterList> chapterLists = chapterListMapper.selectAllData();
+		for (ObjectList record : pageList.getRecords()) {
+			// 查询属于该课程的章节
+			List<ChapterList> objectListFilterList =
+					chapterLists.stream().filter(item -> item.getObjectCode().equals(record.getObjectCode())).collect(Collectors.toList());
+			// 查询该课程已经看过的章节
+			List<ChapterList> objectFilterList =
+					objectListFilterList.stream().filter(item -> "true".equals(item.getWatch())).collect(Collectors.toList());
+			String coursewareLearning = objectFilterList.size() + "/" + objectListFilterList.size();
+			record.setCoursewareLearning(coursewareLearning);
+		}
 		return Result.OK(pageList);
 	}
 	

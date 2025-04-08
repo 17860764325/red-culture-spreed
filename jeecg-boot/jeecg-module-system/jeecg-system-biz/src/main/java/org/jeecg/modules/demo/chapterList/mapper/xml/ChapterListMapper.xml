@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.chapterList.mapper.ChapterListMapper">
+    <select id="selectDataByObjectCode" resultType="org.jeecg.modules.demo.chapterList.entity.ChapterList">
+        SELECT cl.*, od.context, od.vedio
+        FROM  chapter_list cl
+        LEFT JOIN object_data od ON cl.chapter_code = od.chapter_code
+        <where>
+            1 = 1
+            <if test="objectCode != null and objectCode != ''">
+                and cl.object_code = #{objectCode}
+            </if>
+            <if test="chapterCode != null and chapterCode != ''">
+                and cl.chapter_code = #{chapterCode}
+            </if>
+        </where>
+    </select>
 
+    <select id="selectAllData" resultType="org.jeecg.modules.demo.chapterList.entity.ChapterList">
+        SELECT object_code, watch
+        FROM  chapter_list
+        where patient_id != '0'
+    </select>
 </mapper>

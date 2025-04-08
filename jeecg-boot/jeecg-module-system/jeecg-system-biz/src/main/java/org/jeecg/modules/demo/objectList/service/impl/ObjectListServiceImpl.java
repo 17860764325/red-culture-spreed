@@ -1,11 +1,15 @@
 package org.jeecg.modules.demo.objectList.service.impl;
 
+import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.demo.objectList.entity.ObjectList;
 import org.jeecg.modules.demo.objectList.mapper.ObjectListMapper;
 import org.jeecg.modules.demo.objectList.service.IObjectListService;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Description: 课程列表

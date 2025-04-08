@@ -3,10 +3,9 @@ package org.jeecg.modules.demo.chapterList.entity;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import java.util.List;
+
+import com.baomidou.mybatisplus.annotation.*;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecg.common.constant.ProvinceCityArea;
 import org.jeecg.common.util.SpringContextUtils;
@@ -64,4 +63,22 @@ public class ChapterList implements Serializable {
     @Excel(name = "父章节id", width = 15)
     @ApiModelProperty(value = "父章节id")
     private String patientId;
+    /**父章节id*/
+    @Excel(name = "课程编码", width = 15)
+    @ApiModelProperty(value = "课程编码")
+    private String objectCode;
+    /**是否观看*/
+    @Excel(name = "是否观看", width = 15)
+    @ApiModelProperty(value = "是否观看")
+    private String watch;
+    /**具体内容*/
+    @TableField(exist = false)
+    private String context;
+    /**视频内容*/
+    @TableField(exist = false)
+    private String vedio;
+    /**子级数据*/
+    @TableField(exist = false)
+    private List<ChapterList> childList;
+
 }

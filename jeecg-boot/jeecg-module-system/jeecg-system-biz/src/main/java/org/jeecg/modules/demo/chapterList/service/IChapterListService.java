@@ -1,9 +1,13 @@
 package org.jeecg.modules.demo.chapterList.service;
 
+import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.demo.chapterList.entity.ObjectData;
 import org.jeecg.modules.demo.chapterList.entity.ChapterList;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.jeecg.modules.demo.objectList.entity.ObjectList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -30,5 +34,19 @@ public interface IChapterListService extends IService<ChapterList> {
 	 */
 	public void delBatchMain (Collection<? extends Serializable> idList);
 
+
+	/**
+	 * 根据课程编码查询所有的章节数据
+	 * @param chapterList
+	 * @return
+	 */
+	Result<List<ChapterList>> selectDataByObjectCode(ChapterList chapterList);
+
+	/**
+	 * 根据课程编码更新课程
+	 * @param chapterList
+	 * @return
+	 */
+	void updateWatch(ChapterList chapterList);
 
 }

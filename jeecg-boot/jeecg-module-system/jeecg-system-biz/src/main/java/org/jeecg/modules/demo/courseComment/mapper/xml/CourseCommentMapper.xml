@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.demo.courseComment.mapper.CourseCommentMapper">
+    <select id="selectByObjectCodeAndChapterCode" resultType="org.jeecg.modules.demo.courseComment.entity.CourseComment">
+		SELECT *
+		FROM  course_comment
+		<where>
+		1 = 1
+            <if test="objectCode != null and objectCode != ''">
+             and object_code = #{objectCode}
+            </if>
+            <if test="chapterCode != null and chapterCode != ''">
+                and chapter_code = #{chapterCode}
+            </if>
+        </where>
+	</select>
+</mapper>

@@ -31,6 +31,11 @@
            <!--富文本件字段回显插槽-->
            <div v-html="text"></div>
          </template>
+         <template v-if="column.dataIndex==='vedio'">
+           <!--文件字段回显插槽-->
+           <span v-if="!text" style="font-size: 12px;font-style: italic;">无文件</span>
+           <a-button v-else :ghost="true" type="primary" preIcon="ant-design:download-outlined" size="small" @click="downloadFile(text)">下载</a-button>
+         </template>
        </template>
      </BasicTable>
 
