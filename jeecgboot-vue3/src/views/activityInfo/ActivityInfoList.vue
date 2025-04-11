@@ -54,8 +54,10 @@
   // 这里目前没有复杂的逻辑，后续可根据需求添加
   import {ref} from 'vue';
   import {list} from './ActivityInfo.api'
+  import Detail from './components/ActivityInfoDetail.vue'
   import {initDictOptions} from '/@/utils/dict/JDictSelectUtil';
   import {useModal} from "../../components/Modal";
+  import {omit} from "lodash-es";
   const data = ref([])
   const [pageModal, {openModal:openObjectModal}] = useModal();
 

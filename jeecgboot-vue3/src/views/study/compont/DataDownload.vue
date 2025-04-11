@@ -9,8 +9,6 @@
              @mouseenter="changeColor(file, true)" @mouseleave="changeColor(file, false)">
             {{ getFileName(file) }}
           </a>
-<!--          <span @click="downloadFile(file)">{{ getFileName(file) }}</span>-->
-<!--          <a-button @click="downloadFile(file)">下载</a-button>-->
         </li>
       </ul>
     </div>
@@ -32,7 +30,9 @@ function getStart() {
     data.value = []
     for (let i = 0; i < res.length; i++) {
       for (let j = 0; j < res[i].childList.length; j++) {
-        data.value.push(res[i].childList[j].file)
+        if (res[i].childList[j].file !== null && res[i].childList[j].file !== undefined && res[i].childList[j].file !== '') {
+          data.value.push(res[i].childList[j].file)
+        }
       }
     }
   })
@@ -65,8 +65,12 @@ const changeColor = (filePath, isEnter) => {
 
 // 从文件路径中获取文件名（包括扩展名）
 const getFileName = (filePath) => {
-  const lastIndex = filePath.lastIndexOf('/');
-  return lastIndex!== -1? filePath.substring(lastIndex + 1) : filePath;
+  let resFileName = undefined;
+  if (filePath !== undefined && filePath !== '' && filePath !== null) {
+    const lastIndex = filePath.lastIndexOf('/');
+    resFileName = lastIndex!== -1? filePath.substring(lastIndex + 1) : filePath;
+  }
+  return resFileName;
 };
 </script>
 <style scoped lang="less">
