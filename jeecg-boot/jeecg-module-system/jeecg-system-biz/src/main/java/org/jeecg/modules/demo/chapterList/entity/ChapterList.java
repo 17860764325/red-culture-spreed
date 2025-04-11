@@ -77,6 +77,9 @@ public class ChapterList implements Serializable {
     /**视频内容*/
     @TableField(exist = false)
     private String vedio;
+    /**视频内容*/
+    @TableField(exist = false)
+    private String file;
     /**子级数据*/
     @TableField(exist = false)
     private List<ChapterList> childList;

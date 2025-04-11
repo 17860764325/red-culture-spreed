@@ -1,30 +1,33 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" :title="title" :width="896"
               @ok="closeModal" :helpMessage="['提示1', '提示2']" @visible-change="getStart">
-    <div >
-      <a-row style="display:flex;flex-direction: column;width: 100%;align-items: center">
-        <a-row style="width: 70%">
-        <img style="width: 200px;height: 300px;padding: 10px" :src="'../../../../opt/upFiles/'+courseData.objectImg"/>
-        <a-card  style="height: 300px;width: 80%">
-          <div style="display: flex;justify-content: space-between;text-align: center;">
-            <div style="width: 50px;height: 20px;background-color: #0a8fe9"><p style="color: white">课程</p></div>
-            <p>指导教师：{{courseData.objectTeacher}}</p>
-          </div>
-          <p style="font-size: 30px;height: 30px">{{ courseData.objectName }}</p>
-          <a-divider style=" background-color: #b70b0b;margin-bottom: 20px"/>
-          <p>课程概述：{{ courseData.objectRemark}}</p>
-          <a-row>
-            <p>发帖：0/5条｜</p>
-            <!--          <p>课件学习：0/5次｜</p>-->
-            <p>课件学习：{{courseData.coursewareLearning}}｜</p>
-            <p>总时长：0/5分钟</p>
-          </a-row>
-        </a-card>
-        </a-row>
-      </a-row>
-      <a-row style="display:flex;flex-direction: column;width: 100%;align-items: center">
+    <a-row>
+      <div id="app">
+        <div class="article-container">
+          <h1 class="article-title">{{ activityInfo.activityName }}</h1>
+          <span style="font-weight: bold; padding-right: 300px;">{{ '活动开始时间：'}}{{activityInfo.startTime}}</span>
+          <span style="font-weight: bold;">{{ '活动结束时间：'}}{{activityInfo.endTime}}</span>
+          <p style="font-weight: bold;">{{ '活动地点：'}}{{activityInfo.address}}</p>
+          <div v-html="activityInfo.content"></div>
+        </div>
+        <!--      <div style="align: center">-->
+        <!--        <a-button>活动报名</a-button>-->
+        <!--      </div>-->
+        <!--      <button class="center-button">活动报名</button>-->
+      </div>
+    </a-row>
+    <a-row style="align-items: center;padding-left: 45%;">
+      <button v-if="!isRegistered" href="#" class="contact-us-button" @click="handleClick">
+        活动报名
+      </button>
+      <a v-else href="#" class="contact-us-button1">
+        已报名
+      </a>
+    </a-row>
+
+    <a-row style="display:flex;flex-direction: column;width: 100%;align-items: center">
       <a-card style="width: 70%">
-        <h1 class="text-2xl font-bold mb-4">{{courseData.objectName}}课程评论</h1>
+        <h1 class="text-2xl font-bold mb-4">{{activityInfo.activityName}}活动评论</h1>
         <div v-for="comment in comments" :key="comment.id" class="mb-4">
           <div class="flex justify-between items-center">
             <div class="flex items-center">
@@ -75,73 +78,101 @@
         <input v-model="newComment" type="text" class="border border-gray-300 p-2 rounded-l w-full" placeholder="发表评论">
         <button @click="addComment" class="bg-blue-500 text-white p-2 rounded-r">提交</button>
       </div>
-      </a-row>
-    </div>
+    </a-row>
   </BasicModal>
+
 </template>
 
 <script setup>
   import { ref } from 'vue';
-  import { saveOrUpdate, selectByObjectCodeAndChapterCode, deleteByIds, deleteOne } from '../../courseComment/CourseComment.api'
-  import {useUserStore} from "../../../store/modules/user";
-  const userInfo = useUserStore().getUserInfo;
-  const courseData = ref({});
+  const { createMessage, createWarningModal } = useMessage();
   import {BasicModal, useModalInner} from "@/components/Modal";
-  const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
-    setModalProps({defaultFullscreen: true, showCancelBtn: true, showOkBtn: true});
-    courseData.value = data.courseData
-    console.log("courseData.value:")
-    console.log(courseData.value)
-  });
+  import {useUserStore} from "../../../store/modules/user";
+  import { saveOrUpdate, list } from '../../registeredPerson/RegisteredPerson.api'
+  import { saveOrUpdateComment, selectByActivityId, deleteByIds, deleteOne } from '../../activityComment/ActivityComment.api'
+  import { useUserStoreWithOut } from "/@/store/modules/user";
+  import {useMessage} from "../../../hooks/web/useMessage";
+  import {selectByObjectCodeAndChapterCode} from "../../courseComment/CourseComment.api";
+  const userStore = useUserStoreWithOut();
+  const activityInfo = ref({});
+  // 当前登录人信息
+  let userInfo = userStore.getUserInfo;
+  // 判断当亲登录人是否为活动报名人
+  const isRegistered = ref(false);
 
-  // 模拟评论数据
+  // 评论
   const comments = ref([]);
-
   const newComment = ref('');
   const showReply = ref({});
   const replyTexts = ref({});
   const isCommentExpanded = ref({});
 
+  const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
+    setModalProps({defaultFullscreen: true, showCancelBtn: true, showOkBtn: true});
+    activityInfo.value = data.activityInfo
+    // 查询活动报名人数
+    list({activityId: activityInfo.value.id, pageNo:1,pageSize:1000}).then(res => {
+      const filterList = res.records.filter(item => {
+        return (item.activityId === activityInfo.value.id && item.createBy === userInfo.username)
+      })
+      if (filterList.length > 0) {
+        isRegistered.value = true;
+      }
+    })
+
+    // 查询评论
+    // 初始化查询
+    selectByActivityId({activityId: activityInfo.value.id}).then(res => {
+      comments.value = res;
+    });
+  });
 
   function getStart() {
-    // 初始化查询
-    selectByObjectCodeAndChapterCode({objectCode: courseData.value.objectCode, chapterCode: courseData.value.chapterCode}).then(res => {
-      comments.value = res;
+    console.log("activityInfo:")
+    console.log(activityInfo.value)
+
+  }
+
+  /**
+   * 报名按钮点击事件
+   */
+  function handleClick() {
+    // isRegistered.value = true
+    // 点击事件
+    const saveForm = {};
+    saveForm.activityId = activityInfo.value.id
+    saveOrUpdate(saveForm, false).then(res => {
+      isRegistered.value = res.isRegistered;
+      if (res.isRegistered) {
+        createMessage.success(res.message);
+      }
+      if (!res.isRegistered) {
+        createMessage.error(res.message);
+      }
     });
   }
 
-  function replaceObjectRemark(objectRemark) {
-    if (objectRemark !== undefined) {
-      // 使用正则表达式去除 HTML 标签
-      const regex = /<[^>]*>/g;
-      return objectRemark.replace(regex, '');
-    } else {
-      return objectRemark;
-    }
-
-  }
-
+  // 新增评论
   function addComment() {
     if (newComment.value.trim()) {
       const comment = {
         id: Date.now(),
         commentId: userInfo.id,
-        // avatar: 'https://picsum.photos/30/30?random=' + Date.now(),
         avatar: userInfo.avatar,
         name: userInfo.realname,
         content: newComment.value,
         replyToId: 0,
-        objectCode: courseData.value.objectCode,
-        chapterCode: courseData.value.chapterCode,
+        activityId: activityInfo.value.id,
         replies: []
       }
       comments.value.push(comment);
       newComment.value = '';
       isCommentExpanded.value[comment.id] = true
-      saveOrUpdate(comment, false);
+      saveOrUpdateComment(comment, false);
     }
   }
 
+  // 回复评论
   function addReply(parent, grandParent) {
     const replyText = replyTexts.value[parent.id];
     if (replyText.trim()) {
@@ -149,13 +180,11 @@
       const newReply = {
         id: Date.now(),
         commentId: userInfo.id,
-        // avatar: 'https://picsum.photos/30/30?random=' + Date.now(),
         avatar: userInfo.avatar,
         name: userInfo.realname,
         content: replyText,
         replyToName: replyToName,
-        objectCode: courseData.value.objectCode,
-        chapterCode: courseData.value.chapterCode,
+        activityId: activityInfo.value.id,
         replies: []
       };
       if (grandParent) {
@@ -169,7 +198,7 @@
       showReply.value[parent.id] = false;
 
       newReply.replyToId = parent.id;
-      saveOrUpdate(newReply, false);
+      saveOrUpdateComment(newReply, false);
     }
   }
 
@@ -181,6 +210,7 @@
     isCommentExpanded.value[id] = !isCommentExpanded.value[id];
   };
 
+  // 删除顶部评论
   const deleteComment = (commentId, comment) => {
     comments.value = comments.value.filter(comment => comment.id !== commentId);
     // 获取comment下面的所有ID
@@ -192,6 +222,7 @@
     deleteByIds({ids: ids});
   };
 
+  // 删除非顶部评论
   const deleteReply = (commentId, replyId) => {
     const comment = comments.value.find(comment => comment.id === commentId);
     if (comment) {
@@ -199,8 +230,56 @@
     }
     deleteOne({id: replyId});
   };
+
 </script>
 
 <style scoped>
-  /* 这里可以添加自定义样式 */
+  #app {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+
+  .article-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .article-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .article-meta {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 14px;
+  }
+
+  .article-content p {
+    text-align: justify;
+    line-height: 1.6;
+  }
+
+  .center-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+
+  .contact-us-button {
+    padding: 10px 20px;
+    background-color: red;
+    color: white;
+    font-size: 20px;
+  }
+  .contact-us-button1 {
+    padding: 10px 20px;
+    background-color: grey;
+    color: white;
+    font-size: 20px;
+  }
 </style>

@@ -5,46 +5,6 @@
       <!--    左侧章节树-->
       <ScrollContainer  style="width: 20%;border: black 1px solid;height: 800px;background-color: #cfe0ee">
 
-<!--        <a-card>-->
-<!--          <h1>课程列表</h1>-->
-<!--          <div v-for="item in 3">-->
-<!--            <div style="width: 100%;">-->
-<!--              <a-button type="text" style="" @click="">第一章节</a-button>-->
-<!--            </div>-->
-<!--            <div v-for="index in 4" style="width: 100%;">-->
-<!--              <a-button type="text" style="margin-left: 30px" @click="">唯物主义辩证法</a-button>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--        </a-card>-->
-<!--        <a-card>-->
-<!--          <h1>章节概述：</h1>-->
-<!--          <p>该章节主要讲述，马克思主义的基本原理等相关理论概念</p>-->
-<!--        </a-card>-->
-<!--        <a-card>-->
-<!--          <h1>课程概述：</h1>-->
-<!--          <p>该课程讲述了伟大的马克思主义原理</p>-->
-<!--        </a-card>-->
-
-<!--        <a-card>-->
-<!--          <h1>章节概述：</h1>-->
-<!--          <p>该章节主要讲述，马克思主义的基本原理等相关理论概念</p>-->
-<!--        </a-card>-->
-<!--        <a-card>-->
-<!--          <h1>课程概述：</h1>-->
-<!--          <p>该课程讲述了伟大的马克思主义原理</p>-->
-<!--        </a-card>-->
-
-<!--      </ScrollContainer>-->
-<!--      &lt;!&ndash;    对应具体的视频播放模块&ndash;&gt;-->
-<!--      <a-card-->
-<!--        style="border: black 1px solid;width: 70%;margin-left: 5%;height: 800px;background-color: #cfe0ee">-->
-<!--        <video controls style="width: 80%">-->
-<!--          <source src="../../../assets/vedio/test.mp4" type="video/mp4">-->
-<!--          你的浏览器不支持视频播放。-->
-<!--        </video>-->
-<!--      </a-card>-->
-
         <a-card>
           <h1>课程列表</h1>
           <div v-for="item in dataList" :key="item.id" class="parent-item">
@@ -62,7 +22,8 @@
 
         <a-card>
           <h1>章节概述：</h1>
-          <p>{{specificContent}}</p>
+<!--          <p>{{specificContent}}</p>-->
+          <div v-html="specificContent"></div>
         </a-card>
         <a-card>
           <h1>课程概述：</h1>
@@ -73,8 +34,9 @@
       <!--    对应具体的视频播放模块-->
       <a-card
         style="border: black 1px solid;width: 70%;margin-left: 5%;height: 800px;background-color: #cfe0ee">
-        <video controls style="width: 80%">
-          <source :src="vedioPath" type="video/mp4">
+        <video controls style="width: 80%" v-if="shouldShowVideo">
+          <source :src=vedioPath type="video/mp4">
+<!--          <source src="../../../../opt/upFiles/temp/测试视频_1744097293823.mp4" type="video/mp4">-->
           你的浏览器不支持视频播放。
         </video>
       </a-card>
@@ -83,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
 import {BasicModal, useModalInner} from "@/components/Modal";
 import {BasicTree, TreeItem} from "@/components/Tree";
 import { ScrollContainer } from '/@/components/Container/index';
@@ -103,23 +65,28 @@ const dataList = ref([]);
 const specificContent = ref();
 const vedioPath = ref();
 const isComment = ref();
-
+const shouldShowVideo = ref(true);
 function getStart() {
   selectDataByObjectCode({objectCode: courseData.value.objectCode}).then(res => {
     dataList.value = res;
   })
 }
 
-
   function handleChildClick(child) {
+    // 先设为false销毁video元素
+    shouldShowVideo.value = false;
     // 使用正则表达式去除 HTML 标签
     const regex = /<[^>]*>/g;
     specificContent.value = child.context.replace(regex, '');
-
-    // specificContent.value = child.context;
-    vedioPath.value = child.vedio;
+    vedioPath.value = "../../../../opt/upFiles/" + child.vedio;
     isComment.value = true;
     courseData.value.chapterCode = child.chapterCode
+
+    // 再设为true重建元素，浏览器会重新获取新地址内容
+    setTimeout(() => {
+      shouldShowVideo.value = true;
+    }, 100);
+
     if (child.watch !== 'true') {
       // 更新watch字段
       child.watch = 'true'

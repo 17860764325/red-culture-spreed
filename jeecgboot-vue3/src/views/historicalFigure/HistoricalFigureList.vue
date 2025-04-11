@@ -1,41 +1,45 @@
 <template>
   <a-row :gutter="20" justify="center">
-    <a-col :span="6" v-for="(person, index) in historicalFigures" :key="index">
+    <a-col :span="6" v-for="(person, index) in historicalFigures" @click="handleClick(person)" :key="index">
       <div class="person-card" >
         <img  :src="'../../../../opt/upFiles/'+person.imgUrl" alt="人物图片" />
         <h2>{{ person.name }}</h2>
         <div style="height: 200px">
           <ScrollContainer >
             <p>
-              {{ person.mainAchievement }}
+              {{ replaceMainAchievement(person.mainAchievement) }}
             </p>
           </ScrollContainer>
         </div>
       </div>
     </a-col>
   </a-row>
+  <Detail @register="pageModal"></Detail>
 </template>
 
 <script setup>
-  import { Row, Col } from 'ant-design-vue';
   import {  ref } from "vue";
   import {list} from './HistoricalFigure.api'
+  import {useModal} from "../../components/Modal";
+  import Detail from './components/HistoricalDetail.vue'
+  const [pageModal, {openModal:detailModal}] = useModal();
+
+  // detailModal(true, {courseData: courseData.value});
 
   const historicalFigures = ref([]);
   list({pageNo:1,pageSize:1000}).then(res => {
     historicalFigures.value = res.records;
   })
 
-  // const historicalFigures = ref([
-  //   { name: '人物 1', image: 'https://dummyimage.com/300x200/ff0000/ffffff', merits: '这是人物 1 的卓越功绩简介' },
-  //   { name: '人物 2', image: 'https://dummyimage.com/300x200/ff0000/ffffff', merits: '这是人物 2 的卓越功绩简介' },
-  //   { name: '人物 3', image: 'https://dummyimage.com/300x200/ff0000/ffffff', merits: '这是人物 3 的卓越功绩简介' },
-  //   { name: '人物 4', image: 'https://dummyimage.com/300x200/ff0000/ffffff', merits: '这是人物 4 的卓越功绩简介' },
-  //   { name: '人物 5', image: 'https://dummyimage.com/300x200/ff0000/ffffff', merits: '这是人物 5 的卓越功绩简介' },
-  //   { name: '人物 6', image: 'https://dummyimage.com/300x200/ff0000/ffffff', merits: '这是人物 6 的卓越功绩简介' },
-  //   { name: '人物 7', image: 'https://dummyimage.com/300x200/ff0000/ffffff', merits: '这是人物 7 的卓越功绩简介' },
-  //   { name: '人物 8', image: 'https://dummyimage.com/300x200/ff0000/ffffff', merits: '这是人物 8 的卓越功绩简介' },
-  // ]);
+  function replaceMainAchievement(mainAchievement) {
+    // 使用正则表达式去除 HTML 标签
+    const regex = /<[^>]*>/g;
+    return mainAchievement.replace(regex, '');
+  }
+
+  function handleClick(persion) {
+    detailModal(true, {persion: persion});
+  }
 </script>
 
 <style scoped>

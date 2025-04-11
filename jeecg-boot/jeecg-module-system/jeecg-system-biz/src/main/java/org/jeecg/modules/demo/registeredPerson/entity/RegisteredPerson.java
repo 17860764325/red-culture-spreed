@@ -1,74 +1,64 @@
-package org.jeecg.modules.demo.chapterList.entity;
+package org.jeecg.modules.demo.registeredPerson.entity;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import org.jeecg.common.aspect.annotation.Dict;
 import org.jeecg.common.constant.ProvinceCityArea;
 import org.jeecg.common.util.SpringContextUtils;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.jeecgframework.poi.excel.annotation.Excel;
-import java.util.Date;
+import org.jeecg.common.aspect.annotation.Dict;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.UnsupportedEncodingException;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
- * @Description: 课程资料
+ * @Description: 报名人物
  * @Author: jeecg-boot
- * @Date:   2025-02-16
+ * @Date:   2025-04-09
  * @Version: V1.0
  */
 @Data
-@TableName("object_data")
-@ApiModel(value="object_data对象", description="课程资料")
-public class ObjectData implements Serializable {
+@TableName("registered_person")
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
+@ApiModel(value="registered_person对象", description="报名人物")
+public class RegisteredPerson implements Serializable {
     private static final long serialVersionUID = 1L;
 
-	/**主键*/
+	/**id*/
 	@TableId(type = IdType.ASSIGN_ID)
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "id")
     private String id;
+	/**活动ID*/
+	@Excel(name = "活动ID", width = 15)
+    @ApiModelProperty(value = "活动ID")
+    private String activityId;
 	/**创建人*/
     @ApiModelProperty(value = "创建人")
     private String createBy;
-	/**创建日期*/
+	/**创建时间*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty(value = "创建日期")
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 	/**更新人*/
     @ApiModelProperty(value = "更新人")
     private String updateBy;
-	/**更新日期*/
+	/**更新时间*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty(value = "更新日期")
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
-	/**所属部门*/
-    @ApiModelProperty(value = "所属部门")
+	/**所属部门编码*/
+    @ApiModelProperty(value = "所属部门编码")
     private String sysOrgCode;
-	/**章节编码*/
-    @ApiModelProperty(value = "章节编码")
-    private String chapterCode;
-	/**章节名称*/
-	@Excel(name = "章节名称", width = 15)
-    @ApiModelProperty(value = "章节名称")
-    private String chapterName;
-	/**具体内容*/
-	@Excel(name = "具体内容", width = 15)
-    @ApiModelProperty(value = "具体内容")
-    private String context;
-	/**视频内容*/
-	@Excel(name = "视频内容", width = 15)
-    @ApiModelProperty(value = "视频内容")
-    private String vedio;
-    /**文件资料*/
-    @Excel(name = "文件资料", width = 15)
-    @ApiModelProperty(value = "文件资料")
-    private String file;
 }

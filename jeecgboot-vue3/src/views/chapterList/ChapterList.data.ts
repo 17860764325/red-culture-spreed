@@ -83,6 +83,11 @@ export const objectDataColumns: BasicColumn[] = [
     align:"center",
     dataIndex: 'vedio'
    },
+  {
+    title: '文件资料',
+    align:"center",
+    dataIndex: 'file'
+  },
 ];
 //子表表单数据
 export const objectDataFormSchema: FormSchema[] = [
@@ -116,6 +121,11 @@ export const objectDataFormSchema: FormSchema[] = [
   {
     label: '视频内容',
     field: 'vedio',
+    component: 'JUpload',
+  },
+  {
+    label: '文件资料',
+    field: 'file',
     component: 'JUpload',
   },
 ];

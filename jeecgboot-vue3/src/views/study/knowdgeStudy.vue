@@ -32,10 +32,8 @@
     </a-row>
   </div>
   <Objectstudy @register="pageModal"></Objectstudy>
-<!--  <Comment @register="pageModal"></Comment>-->
   <DataDownload @register="register1" />
   <ObjectTest @register="testModal"></ObjectTest>
-<!--  <talk-space @register="register2" ></talk-space>-->
   <Comment @register="register2"></Comment>
 </template>
 <script setup lang="ts">

@@ -1,73 +1,90 @@
 
-
 <template>
-  <BasicDrawer v-bind="$attrs" title="Drawer Title" width="30%">
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="课程文件资料下载" width="30%" @visible-change="getStart">
     <div>
       <h1>文件下载列表</h1>
-      <a-list item-layout="horizontal" :data-source="data">
-        <template #renderItem="{ item }">
-          <a-list-item>
-            <a-list-item-meta
-              description="马克思主义原理知识点相关，试题总结"
-            >
-              <template #title>
-                <a href="">{{ item.title }}</a>
-              </template>
-              <template #avatar>
-                <a-avatar src="../../../../assets/images/daiban.png" />
-              </template>
-            </a-list-item-meta>
-          </a-list-item>
-        </template>
-      </a-list>
+      <ul>
+        <li v-for="(file, index) in data" :key="index" @click="downloadFile(file)">
+          <a :href="filePath" style="color: blue; cursor: pointer;"
+             @mouseenter="changeColor(file, true)" @mouseleave="changeColor(file, false)">
+            {{ getFileName(file) }}
+          </a>
+<!--          <span @click="downloadFile(file)">{{ getFileName(file) }}</span>-->
+<!--          <a-button @click="downloadFile(file)">下载</a-button>-->
+        </li>
+      </ul>
     </div>
   </BasicDrawer>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import {BasicDrawer} from "@/components/Drawer";
-// 模拟文件列表数据
-const fileList = ref([
-  { id: 1, name: '文件1.pdf', url: 'https://example.com/file1.pdf' },
-  { id: 2, name: '文件2.txt', url: 'https://example.com/file2.txt' },
-  { id: 3, name: '文件3.zip', url: 'https://example.com/file3.zip' }
-]);
+import {BasicDrawer, useDrawerInner} from "@/components/Drawer";
+import { selectDataByObjectCode } from '../apiTs/ChapterList.api'
+const courseData = ref({})
+const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
+  courseData.value = data.courseData
+});
+const data = ref([]);
 
-const data: DataItem[] = [
-  {
-    title: '马克思主义原理章节试题.pdf',
-  },
-  {
-    title: '马克思主义原理笔记.pdf',
-  },
-  {
-    title: '马克思主义原理小结测试.pdf',
-  },
-  {
-    title: '马克思主义原理知识点总结.pdf',
-  },
-];
+function getStart() {
+// 资料查询
+  selectDataByObjectCode({objectCode: courseData.value.objectCode}).then(res =>{
+    data.value = []
+    for (let i = 0; i < res.length; i++) {
+      for (let j = 0; j < res[i].childList.length; j++) {
+        data.value.push(res[i].childList[j].file)
+      }
+    }
+  })
+}
 
 // 下载文件的方法
 const downloadFile = (url) => {
   const link = document.createElement('a');
   link.href = url;
-  link.download = ''; // 可以根据需要设置下载的文件名
+  const fileName = getFileName(url);
+  link.download = fileName;
+  document.body.appendChild(link);
   link.click();
-  link.remove();
+  document.body.removeChild(link);
+};
+
+// 改变文字颜色的方法
+const changeColor = (filePath, isEnter) => {
+  const links = document.querySelectorAll('a');
+  links.forEach(link => {
+    if (link.href === filePath) {
+      if (isEnter) {
+        link.style.color ='red';
+      } else {
+        link.style.color = 'blue';
+      }
+    }
+  });
+};
+
+// 从文件路径中获取文件名（包括扩展名）
+const getFileName = (filePath) => {
+  const lastIndex = filePath.lastIndexOf('/');
+  return lastIndex!== -1? filePath.substring(lastIndex + 1) : filePath;
 };
 </script>
 <style scoped lang="less">
-ul {
-  list-style-type: none;
-  padding: 0;
-}
 
-li {
-  margin-bottom: 10px;
-}
+  #app {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
 
-button {
-  margin-left: 10px;
-}
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
 </style>
