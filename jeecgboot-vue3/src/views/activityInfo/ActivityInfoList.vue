@@ -54,11 +54,8 @@
   // 这里目前没有复杂的逻辑，后续可根据需求添加
   import {ref} from 'vue';
   import {list} from './ActivityInfo.api'
-  import Detail from './components/ActivityInfoDetail.vue'
   import {initDictOptions} from '/@/utils/dict/JDictSelectUtil';
   import {useModal} from "../../components/Modal";
-  import {omit} from "lodash-es";
-  const moduleData = ref([{value: 'banbao', lable: '板报'}, {value: 'banbao1', lable: '板报1'}])
   const data = ref([])
   const [pageModal, {openModal:openObjectModal}] = useModal();
 
@@ -67,48 +64,7 @@
   // 获取活动模块字典值
   initDictOptions( 'activityModule').then(res => {
     activityModuleOptions.value = res;
-    console.log("activityModuleOptions:")
-    console.log(activityModuleOptions.value)
   })
-
-  const caseList = ref([
-    {
-      title: '新疆生产建设兵团第九师白杨市: 红色白杨心向党 戍边堡垒...',
-      content: '第九师白杨市始终牢记职责使命，传承兵团精神和胡杨精神、老兵精神，发扬生产队、工作队、战斗队的……'
-    },
-    {
-      title: '广西玉林市: 推行“一网三联两平台”模式 提升城市基层党...',
-      content: '随着城市化进程加快，住宅小区不断增多，外来流动人口也不断增多，小区内矛盾纠纷案件频发，同时也……'
-    },
-    {
-      title: '山东青岛市市北区即墨路街道: 以“一核三治九法”铸强多元...',
-      content: '近年来，山东省青岛市市北区即墨路街道聚焦“即办先锋·墨蕴初心”党建品牌，锚定“新航运·红里院”……'
-    },
-    {
-      title: '山东安丘市: “鸿雁兴安”工程为流动党员“安家”',
-      content: '为了建强流动党员党组织，加强流动党员教育管理，2017年以来，山东省安丘市以流动党员相对集中……'
-    },
-    {
-      title: '江苏常州高新区 (新北区) : “四融”街区治理模式 打造高...',
-      content: '近年来，常州高新区（新北区）围绕汉江路街区聚力打造“高品质国际街区”的目标定位，始终坚持党建引领……'
-    },
-    {
-      title: '湖北荆州市沙市区: 探索“三议三联三公开”机制 推动居民...',
-      content: '近年来，荆州市沙市区在深化共同缔造、推进党建引领美好小区建设的实践中，充分发挥居民小区党组织战斗堡垒作用……'
-    },
-    {
-      title: '福建厦门市湖里区湖里街道: 党建引领齐发力 谱写城中村现...',
-      content: '自后浦社城中村综合治理以来，湖里街道以近邻党建为引领，以“两改造三提升”为抓手，聚焦城中村治理难点……'
-    },
-    {
-      title: '青海西宁市: “每月一题”夯实基层基础',
-      content: '青海省西宁市探索建立夯实基层基础“每月一题”工作机制，市委每个月专门召开一次常委会会议，采取“每月一题”的方式……'
-    },
-    {
-      title: '重庆市南岸区住房城乡建委: “334”工作模式推动老旧小...',
-      content: '为深入推进辖区老旧小区改造，南岸区住房城乡建委党组坚持党建统领，将基层治理触角向老旧小区改造延伸……'
-    }
-  ]);
 
   // 用于记录每个元素的鼠标悬浮状态
   const isHovering = ref(new Array(data.value.length).fill(false));
@@ -117,9 +73,6 @@
   list({pageNo:1,pageSize:1000}).then(res => {
     allData.value = res.records
     data.value = allData.value
-    // data.value.push(data.value[0])
-    // data.value.push(data.value[0])
-    // console.log(data.value)
   })
 
   function selectItem(moduleCode) {
