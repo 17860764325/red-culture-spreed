@@ -4,7 +4,7 @@
       <div class="person-card" >
         <img  :src="'../../../../opt/upFiles/'+person.imgUrl" alt="人物图片" />
         <h2>{{ person.name }}</h2>
-        <div style="height: 200px">
+        <div class="text-wrapper">
           <ScrollContainer >
             <p>
               {{ replaceMainAchievement(person.mainAchievement) }}
@@ -23,8 +23,6 @@
   import {useModal} from "../../components/Modal";
   import Detail from './components/HistoricalDetail.vue'
   const [pageModal, {openModal:detailModal}] = useModal();
-
-  // detailModal(true, {courseData: courseData.value});
 
   const historicalFigures = ref([]);
   list({pageNo:1,pageSize:1000}).then(res => {
@@ -93,10 +91,17 @@
 
   .person-card img {
     width: 100%;
-    height: auto;
+    height: 500px;
+    max-width: 100%;
+    max-height: 100%;
     border-radius: 5px;
     margin-bottom: 10px;
-    object-fit: cover;
+    object-fit: contain;
+    flex: 0 0 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
   }
 
   .person-card h2 {
@@ -112,30 +117,27 @@
     color: #0d1117;
   }
 
+  .text-wrapper {
+    flex: 0 0 30%;
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  .text-wrapper p {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* 可根据实际情况调整显示的行数 */
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
   @keyframes borderAnimation {
     0% {
       background-position: 0 0;
     }
     100% {
       background-position: 200% 200%;
-    }
-  }
-
-  @media (max-width: 1200px) {
-    .ant-col {
-      width: calc(33.33% - 20px);
-    }
-  }
-
-  @media (max-width: 900px) {
-    .ant-col {
-      width: calc(50% - 20px);
-    }
-  }
-
-  @media (max-width: 600px) {
-    .ant-col {
-      width: 100%;
     }
   }
 </style>

@@ -2,8 +2,7 @@
   <BasicModal v-bind="$attrs" @register="registerModal" :title="title" :width="896"
               @ok="closeModal" :helpMessage="['提示1', '提示2']" @visible-change="getStart">
 
-    <div id="app">
-      <div class="person-container">
+    <div class="person-container">
       <a-card class="left-column">
         <img :src="personPhoto" alt="人物照片" class="person-image">
       </a-card>
@@ -14,8 +13,6 @@
         <p>主要事迹：</p>
         <div v-html="personInfo.mainAchievement" class="rich-text"></div>
       </a-card>
-
-      </div>
     </div>
   </BasicModal>
 </template>
@@ -28,24 +25,11 @@
   import {BasicModal, useModalInner} from "@/components/Modal";
   const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
     setModalProps({defaultFullscreen: true, showCancelBtn: true, showOkBtn: true});
-    console.log('data.persion:')
-    console.log(data.persion)
     personInfo.value = data.persion
     personPhoto.value = "../../../../opt/upFiles/" + personInfo.value.imgUrl;
-    console.log("personPhoto.value:")
-    console.log(personPhoto.value)
   });
 
   const personPhoto = ref();
-  // // 模拟人物照片路径
-  // const personPhoto = ref('https://via.placeholder.com/300');
-  // // 模拟人物详细信息
-  // const personInfo = ref({
-  //   name: '张三',
-  //   age: 30,
-  //   job: '软件工程师',
-  //   bio: '拥有多年软件开发经验，擅长前端和后端开发。'
-  // });
 
   // 模拟评论数据
   const comments = ref([]);
@@ -71,11 +55,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: 100%;
   }
 
   .right-column {
     flex: 2;
     padding: 20px;
+    max-width: 100%;
+    height: auto;
   }
 
   .person-image {
@@ -84,6 +71,8 @@
     border: 4px solid transparent;
     border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet) 1;
     animation: border-marquee 5s linear infinite;
+    height: 100vh;
+    object-fit: cover;
   }
 
   @keyframes border-marquee {
@@ -92,6 +81,13 @@
     }
     100% {
       border-image: linear-gradient(to left, red, orange, yellow, green, blue, indigo, violet) 1;
+    }
+  }
+
+  /* 小屏幕设备适配 */
+  @media (max-width: 600px) {
+    .person-container {
+      flex-direction: column;
     }
   }
 </style>

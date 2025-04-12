@@ -4,7 +4,7 @@
     <div >
       <a-row style="display:flex;flex-direction: column;width: 100%;align-items: center">
         <a-row style="width: 70%">
-        <img style="width: 200px;height: 300px;padding: 10px" :src="'../../../../opt/upFiles/'+courseData.objectImg"/>
+        <img style="width: 20%;height: 300px;padding: 10px" :src="'../../../../opt/upFiles/'+courseData.objectImg"/>
         <a-card  style="height: 300px;width: 80%">
           <div style="display: flex;justify-content: space-between;text-align: center;">
             <div style="width: 50px;height: 20px;background-color: #0a8fe9"><p style="color: white">课程</p></div>
