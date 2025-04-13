@@ -90,8 +90,6 @@
   const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
     setModalProps({defaultFullscreen: true, showCancelBtn: true, showOkBtn: true});
     courseData.value = data.courseData
-    console.log("courseData.value:")
-    console.log(courseData.value)
   });
 
   // 模拟评论数据

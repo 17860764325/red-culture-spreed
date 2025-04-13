@@ -18,6 +18,9 @@ enum Api {
   objectDataDeleteBatch = '/chapterList/chapterList/deleteBatchObjectData',
   selectDataByObjectCode = '/chapterList/chapterList/selectDataByObjectCode',
   updateWatch = '/chapterList/chapterList/updateWatch',
+  addObjectData = '/chapterList/chapterList/addObjectData',
+  editObjectData = '/chapterList/chapterList/editObjectData',
+  editObjectDataWatchTime = '/chapterList/chapterList/editObjectDataWatchTime',
 }
 /**
  * 导出api
@@ -138,4 +141,28 @@ export const selectDataByObjectCode = (params) =>
  */
 export const updateWatch = (params) => {
   defHttp.post({url: Api.updateWatch, params});
+}
+
+/**
+ * 课程资料-添加
+ * @param params
+ */
+export const addObjectData = (params) => {
+  defHttp.post({url: Api.addObjectData, params});
+}
+
+/**
+ * 课程资料-编辑
+ * @param params
+ */
+export const editObjectData = (params) => {
+  defHttp.post({url: Api.editObjectData, params});
+}
+
+/**
+ * 课程资料视频-编辑(无返回信息)
+ * @param params
+ */
+export const editObjectDataWatchTime = (params) => {
+  defHttp.post({url: Api.editObjectDataWatchTime, params});
 }

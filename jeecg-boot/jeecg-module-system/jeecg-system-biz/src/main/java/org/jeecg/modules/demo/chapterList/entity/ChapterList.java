@@ -83,5 +83,14 @@ public class ChapterList implements Serializable {
     /**子级数据*/
     @TableField(exist = false)
     private List<ChapterList> childList;
+    /**课程资料ID*/
+    @TableField(exist = false)
+    private String objectDataId;
+    /**视频总时长(分)*/
+    @TableField(exist = false)
+    private Double totalWatchTime;
+    /**视频观看时长(分)*/
+    @TableField(exist = false)
+    private Double watchTime;
 
 }

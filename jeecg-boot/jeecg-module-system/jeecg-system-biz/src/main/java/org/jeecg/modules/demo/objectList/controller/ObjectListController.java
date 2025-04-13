@@ -1,10 +1,13 @@
 package org.jeecg.modules.demo.objectList.controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
@@ -13,6 +16,8 @@ import org.jeecg.common.system.query.QueryRuleEnum;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.chapterList.entity.ChapterList;
 import org.jeecg.modules.demo.chapterList.mapper.ChapterListMapper;
+import org.jeecg.modules.demo.courseComment.entity.CourseComment;
+import org.jeecg.modules.demo.courseComment.mapper.CourseCommentMapper;
 import org.jeecg.modules.demo.objectList.entity.ObjectList;
 import org.jeecg.modules.demo.objectList.service.IObjectListService;
 
@@ -53,6 +58,8 @@ public class ObjectListController extends JeecgController<ObjectList, IObjectLis
 	private IObjectListService objectListService;
 	@Autowired
 	private ChapterListMapper chapterListMapper;
+	@Autowired
+	private CourseCommentMapper courseCommentMapper;
 	
 	/**
 	 * 分页列表查询
@@ -79,11 +86,44 @@ public class ObjectListController extends JeecgController<ObjectList, IObjectLis
 			// 查询属于该课程的章节
 			List<ChapterList> objectListFilterList =
 					chapterLists.stream().filter(item -> item.getObjectCode().equals(record.getObjectCode())).collect(Collectors.toList());
+
+			// 计算课件学习字段
 			// 查询该课程已经看过的章节
 			List<ChapterList> objectFilterList =
 					objectListFilterList.stream().filter(item -> "true".equals(item.getWatch())).collect(Collectors.toList());
 			String coursewareLearning = objectFilterList.size() + "/" + objectListFilterList.size();
 			record.setCoursewareLearning(coursewareLearning);
+
+			// 计算学习总时长字段
+			// 记录视频总时长
+			BigDecimal totalWatchTime = BigDecimal.ZERO;
+			// 记录视频观看时长
+			BigDecimal watchTime = BigDecimal.ZERO;
+			for (ChapterList chapterList : objectListFilterList) {
+				if (chapterList.getTotalWatchTime() != null) {
+					// 统计所有视频的观看总时长，并保留两位小数，使用四舍五入的舍入模式
+					totalWatchTime = totalWatchTime.add(BigDecimal.valueOf(chapterList.getTotalWatchTime()).setScale(2, RoundingMode.HALF_UP));
+				}
+				if (chapterList.getWatchTime() != null) {
+					// 统计所有视频的观看时长，并保留两位小数，使用四舍五入的舍入模式
+					watchTime = watchTime.add(BigDecimal.valueOf(chapterList.getWatchTime()).setScale(2, RoundingMode.HALF_UP));
+				}
+			}
+			// 转换成正数
+//			long totalWatchTimeLong = totalWatchTime.setScale(0, RoundingMode.HALF_UP).longValue();
+//			long watchTimeLong = watchTime.setScale(0, RoundingMode.HALF_UP).longValue();
+			String totalTime = watchTime + "/" + totalWatchTime;
+			record.setTotalTime(totalTime);
+
+			// 计算发帖条数
+			// 根据课程编码和章节编码查询数据
+			CourseComment courseComment = new CourseComment();
+			courseComment.setObjectCode(record.getObjectCode());
+			List<CourseComment> courseComments = courseCommentMapper.selectByObjectCodeAndChapterCode(courseComment);
+			// 先查询所有replyToId为0的数据，这里是找出所有一级评论
+			List<CourseComment> filterList = courseComments.stream().filter(item -> item.getReplyToId().equals("0")).collect(Collectors.toList());
+			String postNumber = String.valueOf(filterList.size());
+			record.setPostNumber(postNumber);
 		}
 		return Result.OK(pageList);
 	}

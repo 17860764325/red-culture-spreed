@@ -5,6 +5,7 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/test/answerQuestionLog/list',
+  list2 = '/test/answerQuestionLog/list2',
   save='/test/answerQuestionLog/add',
   edit='/test/answerQuestionLog/edit',
   deleteOne = '/test/answerQuestionLog/delete',
@@ -34,6 +35,13 @@ export const queryAnswerQuestionLogDetail = Api.answerQuestionLogDetailList
  */
 export const list = (params) =>
   defHttp.get({url: Api.list, params});
+
+/**
+ * 列表接口
+ * @param params
+ */
+export const list2 = (params) =>
+  defHttp.get({url: Api.list2, params});
 
 /**
  * 删除单个

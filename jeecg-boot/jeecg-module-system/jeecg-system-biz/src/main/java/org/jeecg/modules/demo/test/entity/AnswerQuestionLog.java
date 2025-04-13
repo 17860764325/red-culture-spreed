@@ -73,4 +73,6 @@ public class AnswerQuestionLog implements Serializable {
 
     @TableField(exist = false)
     private String time;
+    @TableField(exist = false)
+    private String objectCode;
 }

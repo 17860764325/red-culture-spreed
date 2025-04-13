@@ -1,7 +1,15 @@
 package org.jeecg.modules.demo.chapterList.service;
 
+import io.swagger.annotations.ApiOperation;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.modules.demo.chapterList.entity.ObjectData;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import java.util.List;
 
 /**
@@ -19,4 +27,18 @@ public interface IObjectDataService extends IService<ObjectData> {
    * @return List<ObjectData>
    */
 	public List<ObjectData> selectByMainId(String mainId);
+
+    /**
+     * 编辑
+     * @param objectData
+     * @return
+     */
+    Result<String> editObjectData(ObjectData objectData);
+
+    /**
+     * 添加
+     * @param objectData
+     * @return
+     */
+    Result<String> addObjectData(@RequestBody ObjectData objectData);
 }

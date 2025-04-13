@@ -13,10 +13,11 @@
         <a-divider style=" background-color: #b70b0b;margin-bottom: 20px"/>
         <p>课程概述：{{ item.objectRemark}}</p>
         <a-row>
-          <p>发帖：0/5条｜</p>
+<!--          <p>发帖：0/5条｜</p>-->
+          <p>发帖：{{item.postNumber}}条｜</p>
 <!--          <p>课件学习：0/5次｜</p>-->
           <p>课件学习：{{item.coursewareLearning}}｜</p>
-          <p>总时长：0/5分钟</p>
+          <p>总时长：{{item.totalTime}}分钟</p>
         </a-row>
         <a-row style="">
 <!--          打开弹窗进行学习-->
@@ -27,6 +28,8 @@
           <a-button type="primary" style="margin-left: 30px" @click="handleClick('3', item)">课程考试</a-button>
 <!--          点击展示抽栏论坛-->
           <a-button type="primary" style="margin-left: 30px" @click="handleClick('4', item)">课程讨论</a-button>
+          <!--          点击展示考试结果-->
+          <a-button type="primary" style="margin-left: 30px" @click="handleClick('5', item)">考试结果</a-button>
         </a-row>
       </a-card>
     </a-row>
@@ -35,10 +38,14 @@
   <DataDownload @register="register1" />
   <ObjectTest @register="testModal"></ObjectTest>
   <Comment @register="register2"></Comment>
+  <ExamResult @register="resultModal"></ExamResult>
 </template>
 <script setup lang="ts">
 import {ref, reactive, computed, unref,provide} from 'vue';
 import {list} from '../objectList/ObjectList.api'
+import {useUserStore} from "../../store/modules/user";
+// 当前登录人信息
+const userInfo = useUserStore().getUserInfo;
 import Objectstudy  from "@/views/study/compont/Objectstudy.vue";
 import {useModal} from "@/components/Modal";
 import Drawer1 from "@/views/demo/comp/drawer/Drawer1.vue";
@@ -47,6 +54,8 @@ import {useDrawer} from "@/components/Drawer";
 import ObjectTest from "@/views/study/compont/ObjectTest.vue";
 import TalkSpace from "@/views/study/compont/TalkSpace.vue";
 import Comment  from '../study/compont/CourseComment.vue';
+import ExamResult  from '../study/compont/ExamResult.vue';
+import {FormSchema} from "@/components/Form";
 
 const objectInfoList = ref<Array>([])
 const [pageModal, {openModal:openObjectStudyModal}] = useModal();
@@ -54,8 +63,10 @@ const [testModal, {openModal:openObjectTestModal}] = useModal();
 const [register1, { openDrawer: openDrawer1, setDrawerProps1 }] = useDrawer();
 // const [register2, { openDrawer: openDrawer2, setDrawerProps2 }] = useDrawer();
 const [register2, {openModal:openDrawer2}] = useModal();
+const [resultModal, {openModal:openResultModal}] = useModal();
 
 const courseData = ref({});
+
 
 // 获取基本的课程信息
 list().then(res=>{
@@ -77,6 +88,9 @@ function handleClick(type, item){
       break;
     case '4':
       openDrawer2(true, {courseData: courseData.value})
+      break;
+    case '5':
+      openResultModal(true, {courseData: courseData.value})
       break;
     default:
       break;

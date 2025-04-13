@@ -47,5 +47,12 @@ public interface IAnswerQuestionLogService extends IService<AnswerQuestionLog> {
 	public void delBatchMain (Collection<? extends Serializable> idList);
 
 	public List<PersonalityShortcomingsTendencies> getAvgSocereByPeople(String username);
+
+	/**
+	 * 查询数据(和试卷表挂钩)
+	 * @param answerQuestionLog
+	 * @return
+	 */
+	List<AnswerQuestionLog> selectDataList(AnswerQuestionLog answerQuestionLog);
 	
 }

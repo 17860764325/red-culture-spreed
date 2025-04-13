@@ -82,6 +82,32 @@ public class AnswerQuestionLogController {
 		IPage<AnswerQuestionLog> pageList = answerQuestionLogService.page(page, queryWrapper);
 		return Result.OK(pageList);
 	}
+
+	 /**
+	  * 分页列表查询(和课程挂钩)
+	  *
+	  * @param answerQuestionLog
+	  * @param pageNo
+	  * @param pageSize
+	  * @param req
+	  * @return
+	  */
+	 //@AutoLog(value = "answer_question_log-分页列表查询")
+	 @ApiOperation(value="answer_question_log-分页列表查询", notes="answer_question_log-分页列表查询")
+	 @GetMapping(value = "/list2")
+	 public Result<IPage<AnswerQuestionLog>> queryPageList2(AnswerQuestionLog answerQuestionLog,
+														   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+														   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+														   HttpServletRequest req) {
+//		 QueryWrapper<AnswerQuestionLog> queryWrapper = QueryGenerator.initQueryWrapper(answerQuestionLog, req.getParameterMap());
+		 Page<AnswerQuestionLog> page = new Page<AnswerQuestionLog>(pageNo, pageSize);
+//		 page.setRecords();
+		 List<AnswerQuestionLog> list = answerQuestionLogService.selectDataList(answerQuestionLog);
+		 page.setRecords(list);
+//		 IPage<AnswerQuestionLog> pageList = answerQuestionLogService.page(page, queryWrapper);
+//		 return Result.OK(pageList);
+		 return Result.OK(page);
+	 }
 	
 	/**
 	 *   添加

@@ -10,6 +10,7 @@ import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.demo.objectList.entity.ObjectList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,6 +55,9 @@ public class ChapterListController extends JeecgController<ChapterList, IChapter
 
 	@Autowired
 	private IObjectDataService objectDataService;
+
+	@Value("${jeecg.path.upload}")
+	private String filePath;
 
 
 	/*---------------------------------主表处理-begin-------------------------------------*/
@@ -184,7 +188,8 @@ public class ChapterListController extends JeecgController<ChapterList, IChapter
 	@ApiOperation(value="课程资料-添加", notes="课程资料-添加")
 	@PostMapping(value = "/addObjectData")
 	public Result<String> addObjectData(@RequestBody ObjectData objectData) {
-		objectDataService.save(objectData);
+//		objectDataService.save(objectData);
+		objectDataService.addObjectData(objectData);
 		return Result.OK("添加成功！");
 	}
 
@@ -197,9 +202,22 @@ public class ChapterListController extends JeecgController<ChapterList, IChapter
 	@ApiOperation(value="课程资料-编辑", notes="课程资料-编辑")
 	@RequestMapping(value = "/editObjectData", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> editObjectData(@RequestBody ObjectData objectData) {
-		objectDataService.updateById(objectData);
+//		objectDataService.updateById(objectData);
+		objectDataService.editObjectData(objectData);
 		return Result.OK("编辑成功!");
 	}
+
+	 /**
+	  * 编辑视频内容(无返回信息)
+	  * @param objectData
+	  * @return
+	  */
+	 @AutoLog(value = "课程资料视频-编辑")
+	 @RequestMapping(value = "/editObjectDataWatchTime", method = {RequestMethod.PUT,RequestMethod.POST})
+	 public Result<String> editObjectDataWatchTime(@RequestBody ObjectData objectData) {
+		 objectDataService.editObjectData(objectData);
+		 return Result.OK();
+	 }
 
 	/**
 	 * 通过id删除

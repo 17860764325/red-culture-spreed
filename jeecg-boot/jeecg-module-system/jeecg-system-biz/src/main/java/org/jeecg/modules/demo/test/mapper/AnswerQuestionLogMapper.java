@@ -14,4 +14,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface AnswerQuestionLogMapper extends BaseMapper<AnswerQuestionLog> {
 
+    /**
+     * 查询数据(和试卷表挂钩)
+     * @param answerQuestionLog
+     * @return
+     */
+    List<AnswerQuestionLog> selectDataList(AnswerQuestionLog answerQuestionLog);
 }

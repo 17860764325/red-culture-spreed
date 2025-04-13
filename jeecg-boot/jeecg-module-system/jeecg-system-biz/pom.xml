@@ -43,6 +43,12 @@
 			<groupId>org.jeecgframework.jimureport</groupId>
 			<artifactId>jimubi-spring-boot-starter</artifactId>
 		</dependency>
+		<!-- 处理视频相关的依赖，例如要获取视频的时长等等 -->
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacv-platform</artifactId>
+			<version>1.5.8</version>
+		</dependency>
 	</dependencies>
 	
 </project>

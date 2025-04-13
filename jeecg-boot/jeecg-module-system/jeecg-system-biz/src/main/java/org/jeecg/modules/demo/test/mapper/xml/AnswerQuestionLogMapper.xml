@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.test.mapper.AnswerQuestionLogMapper">
-
+    <select id="selectDataList" resultType="org.jeecg.modules.demo.test.entity.AnswerQuestionLog">
+        SELECT
+        a.*
+        FROM
+        ( SELECT aql.*, ea.object_code FROM answer_question_log aql
+        LEFT JOIN examination_all ea ON aql.paper_code = ea.examination_code ) a
+        <where>
+            1 = 1
+            <if test="objectCode != null and objectCode != ''">
+                and object_code = #{objectCode}
+            </if>
+        </where>
+    </select>
 </mapper>

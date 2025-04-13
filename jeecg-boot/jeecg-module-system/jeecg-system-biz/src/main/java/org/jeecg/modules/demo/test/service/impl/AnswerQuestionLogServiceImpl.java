@@ -80,4 +80,9 @@ public class AnswerQuestionLogServiceImpl extends ServiceImpl<AnswerQuestionLogM
 		return answerQuestionLogDetailMapper.getAvgSocereByPeople(username);
 	}
 
+	@Override
+	public List<AnswerQuestionLog> selectDataList(AnswerQuestionLog answerQuestionLog) {
+		return answerQuestionLogMapper.selectDataList(answerQuestionLog);
+	}
+
 }

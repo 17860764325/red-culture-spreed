@@ -81,4 +81,15 @@ public class ObjectList implements Serializable {
      */
     @TableField(exist = false)
     private String coursewareLearning;
+
+    /**
+     * 总时长
+     */
+    @TableField(exist = false)
+    private String totalTime;
+    /**
+     * 发帖条数
+     */
+    @TableField(exist = false)
+    private String postNumber;
 }

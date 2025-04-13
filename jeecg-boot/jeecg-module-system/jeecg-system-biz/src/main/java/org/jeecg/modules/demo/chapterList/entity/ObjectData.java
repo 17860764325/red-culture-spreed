@@ -71,4 +71,12 @@ public class ObjectData implements Serializable {
     @Excel(name = "文件资料", width = 15)
     @ApiModelProperty(value = "文件资料")
     private String file;
+    /**视频总时长(分)*/
+    @Excel(name = "视频总时长(分)", width = 15)
+    @ApiModelProperty(value = "视频总时长(分)")
+    private Double totalWatchTime;
+    /**视频观看时长(分)*/
+    @Excel(name = "视频观看时长(分)", width = 15)
+    @ApiModelProperty(value = "视频观看时长(分)")
+    private Double watchTime;
 }

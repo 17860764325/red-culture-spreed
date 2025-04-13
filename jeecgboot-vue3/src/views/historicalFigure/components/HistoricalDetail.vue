@@ -56,6 +56,7 @@
     justify-content: center;
     align-items: center;
     max-width: 100%;
+    height: auto;
   }
 
   .right-column {
