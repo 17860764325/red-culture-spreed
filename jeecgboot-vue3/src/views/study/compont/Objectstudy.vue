@@ -25,7 +25,7 @@
         </a-card>
         <a-card>
           <h1>课程概述：</h1>
-          <p>该课程讲述了伟大的马克思主义原理</p>
+          <p>{{courseData.objectRemark}}</p>
         </a-card>
 
       </ScrollContainer>

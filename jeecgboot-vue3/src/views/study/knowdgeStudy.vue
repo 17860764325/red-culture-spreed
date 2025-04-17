@@ -11,7 +11,9 @@
         </div>
         <p style="font-size: 30px;height: 30px">{{ item.objectName }}</p>
         <a-divider style=" background-color: #b70b0b;margin-bottom: 20px"/>
-        <p>课程概述：{{ item.objectRemark}}</p>
+        <div class="multi-line-ellipsis">
+          <p>课程概述：{{ item.objectRemark}}</p>
+        </div>
         <a-row>
 <!--          <p>发帖：0/5条｜</p>-->
           <p>发帖：{{item.postNumber}}条｜</p>
@@ -100,5 +102,11 @@ function handleClick(type, item){
 
 </script>
 <style scoped lang="less">
-
+  .multi-line-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* 指定显示的行数 */
+  }
 </style>
