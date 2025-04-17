@@ -82,7 +82,9 @@ function getStart() {
     shouldShowVideo.value = false;
     // 使用正则表达式去除 HTML 标签
     const regex = /<[^>]*>/g;
-    specificContent.value = child.context.replace(regex, '');
+    if (child.context !== undefined && child.context !== null && child.context !== '') {
+      specificContent.value = child.context.replace(regex, '');
+    }
     vedioPath.value = "../../../../opt/upFiles/" + child.vedio;
     isComment.value = true;
     courseData.value.chapterCode = child.chapterCode
